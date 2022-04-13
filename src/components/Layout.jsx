@@ -51,7 +51,7 @@ const Footer = styled.footer`
 `;
 
 const Content = styled.div`
-  min-height: calc(100vh - 200px);
+  min-height: calc(100vh - 170px);
   display: flex;
   flex-direction: column;
 `;

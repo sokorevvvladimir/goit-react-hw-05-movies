@@ -1,3 +1,4 @@
+import { Toaster } from 'react-hot-toast';
 import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import HomePage from 'pages/HomePage';
@@ -14,6 +15,7 @@ const Container = styled.div`
 export const App = () => {
   return (
     <Container>
+      <Toaster />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />

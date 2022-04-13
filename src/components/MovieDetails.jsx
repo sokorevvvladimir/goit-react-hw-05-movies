@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { fetchGenres } from '../services/fetcherAPI';
 
 const StyledDiv = styled.div`
   display: flex;
@@ -15,8 +13,7 @@ const StyledP = styled.p`
 `;
 
 const MovieDetails = ({ item }) => {
-  const BASE_URL = 'https://image.tmdb.org/t/p/w300/';
-  let movieCardGenres = [];
+  const BASE_URL = 'https://image.tmdb.org/t/p/w500/';
 
   const {
     poster_path,
@@ -24,43 +21,41 @@ const MovieDetails = ({ item }) => {
     release_date,
     vote_average,
     overview,
-    genre_ids,
+    genres,
+    videos,
   } = item;
-  const [genres, setGenres] = useState([]);
 
-  useEffect(() => {
-    const genreFinder = async () => {
-      const result = await fetchGenres();
-      setGenres(result.data.genres);
-    };
-
-    genreFinder();
-  }, []);
-
-  const genresCompiler = () => {
-    genre_ids.forEach(genre_id => {
-      const result = genres.filter(genre => genre.id === genre_id);
-
-      const [res] = result;
-      if (res) {
-        movieCardGenres.push(res.name);
-      }
-      return res;
-    });
-  };
-
-  genresCompiler();
+  const videosArray = videos.results;
+  const videoObject = videosArray.find(v => v.type === 'Trailer');
+  const id = videoObject.key;
 
   return (
     <StyledDiv>
-      <img src={`${BASE_URL}${poster_path}`} alt={original_title} />
+      <img src={`${BASE_URL}${poster_path}`} alt={original_title} width="500" />
       <ContentDiv>
         <h1>{`${original_title} (${Number.parseInt(release_date)})`}</h1>
         <StyledP>User Score: {vote_average}</StyledP>
         <h2>Overview</h2>
         <StyledP>{overview}</StyledP>
         <h3>Genres</h3>
-        <StyledP>{movieCardGenres.join(' ')}</StyledP>
+        <StyledP>
+          {genres.map(genre => (
+            <span key={genre.id}>{`${genre.name} `}</span>
+          ))}
+        </StyledP>
+        {id && (
+          <>
+            <h4>Trailer</h4>
+            <iframe
+              width="560"
+              height="315"
+              title="movieTrailer"
+              src={`https://www.youtube.com/embed/${id}`}
+              frameBorder="0"
+              allowFullScreen
+            ></iframe>
+          </>
+        )}
       </ContentDiv>
     </StyledDiv>
   );
