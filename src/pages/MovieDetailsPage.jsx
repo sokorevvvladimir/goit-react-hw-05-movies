@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { fetchMovieDetails } from '../services/fetcherAPI';
 import MovieDetails from '../components/MovieDetails';
-import { useParams, NavLink } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import { useParams, NavLink, Outlet } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Link = styled(NavLink)`
   text-decoration: none;
@@ -11,10 +11,10 @@ const Link = styled(NavLink)`
 `;
 
 const Button = styled.button`
-  border: none;
+  border: 2px solid #ffffff;
   background-color: #b5bdf0;
   border-radius: 3px;
-  height: 28px;
+  height: 30px;
   margin-bottom: 20px;
   position: sticky;
   top: 80px;
@@ -24,7 +24,7 @@ const Button = styled.button`
   }
 `;
 
-const MovieDetailsPage = () => {
+const MovieDetailsPage = ({ itemFetcher }) => {
   const { movieId } = useParams();
   const [item, setItem] = useState(null);
 
@@ -42,6 +42,7 @@ const MovieDetailsPage = () => {
     fetchMovie();
   }, [movieId]);
 
+  itemFetcher(item);
   console.log(item);
 
   return (
@@ -49,8 +50,8 @@ const MovieDetailsPage = () => {
       <Button type="button">
         <Link to="/">← Go back</Link>
       </Button>
-      {/* <div>Movie details here {movieId}</div> */}
       {item && <MovieDetails item={item} />}
+      <Outlet />
     </>
   );
 };

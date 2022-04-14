@@ -28,7 +28,7 @@ const fetchPopularMovies = async () => {
 
 const fetchMovieDetails = async id => {
   const response = await Axios.get(
-    `${BASE_URL}movie/${id}?api_key=${KEY}&append_to_response=videos`
+    `${BASE_URL}movie/${id}?api_key=${KEY}&append_to_response=videos,credits,reviews`
   );
   const result = response.data;
 
