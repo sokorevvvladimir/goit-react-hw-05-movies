@@ -1,33 +1,33 @@
-import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import useFetchHomeMovies from '../hooks/useFetchHomeMovies';
 import styled from 'styled-components';
 import Loader from '../components/Loader';
+import MoviesUlComponentReused from 'components/MoviesUlComponentReused';
 
-const StyledDiv = styled.div`
-  font-size: 26px;
-  font-weight: 600;
+const StyledH1 = styled.h1`
+  font-size: 40px;
+  font-weight: 700;
+  color: #afb9f8;
+  text-transform: uppercase;
+  margin: 0;
 `;
 
-const StyledLi = styled.li`
-  font-size: 18px;
-  font-weight: 500;
-  text-transform: uppercase;
+const FlexDiv = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const HomePage = () => {
+  const { pathname } = useLocation();
   const { movies, isLoading } = useFetchHomeMovies();
 
   return (
     <>
-      <StyledDiv>Trending today</StyledDiv>
+      <FlexDiv>
+        <StyledH1>Trending today</StyledH1>
+      </FlexDiv>
       {isLoading && <Loader />}
-      <ul>
-        {movies.map(movie => (
-          <StyledLi key={movie.id}>
-            <Link to={`/movies/${movie.id}`}>{movie.original_title}</Link>
-          </StyledLi>
-        ))}
-      </ul>
+      <MoviesUlComponentReused movies={movies} pathname={pathname} />
     </>
   );
 };

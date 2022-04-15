@@ -2,13 +2,10 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { fetchMovieDetails } from '../services/fetcherAPI';
 import MovieDetails from '../components/MovieDetails';
-import { useParams, NavLink, Outlet } from 'react-router-dom';
+import { useParams, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
-const Link = styled(NavLink)`
-  text-decoration: none;
-  color: #ffffff;
-`;
+import PropTypes from 'prop-types';
+import { BsFillCaretLeftFill } from 'react-icons/bs';
 
 const Button = styled.button`
   border: 2px solid #ffffff;
@@ -18,6 +15,8 @@ const Button = styled.button`
   margin-bottom: 20px;
   position: sticky;
   top: 80px;
+  color: #ffffff;
+  cursor: pointer;
 
   &:hover {
     background-color: #a8b4ff;
@@ -25,8 +24,11 @@ const Button = styled.button`
 `;
 
 const MovieDetailsPage = ({ itemFetcher }) => {
-  const { movieId } = useParams();
+  const { slug } = useParams();
+  const navigate = useNavigate();
   const [item, setItem] = useState(null);
+  const location = useLocation();
+  const movieId = slug.match(/[a-z0-9]+$/)[0];
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -43,17 +45,22 @@ const MovieDetailsPage = ({ itemFetcher }) => {
   }, [movieId]);
 
   itemFetcher(item);
-  console.log(item);
+
+  const onGoBack = () => {
+    navigate(`${location?.state?.from}`);
+  };
 
   return (
     <>
-      <Button type="button">
-        <Link to="/">← Go back</Link>
+      <Button type="button" onClick={onGoBack}>
+        <BsFillCaretLeftFill size="10" fill="#ffffff" /> Go back
       </Button>
-      {item && <MovieDetails item={item} />}
+      {item && <MovieDetails item={item} location={location} slug={slug} />}
       <Outlet />
     </>
   );
 };
+
+MovieDetailsPage.propTypes = { itemFetcher: PropTypes.func.isRequired };
 
 export default MovieDetailsPage;

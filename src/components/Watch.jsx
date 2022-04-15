@@ -1,5 +1,4 @@
-import { TailSpin } from 'react-loader-spinner';
-
+import { Watch } from 'react-loader-spinner';
 import styled from 'styled-components';
 
 const StyledDiv = styled.div`
@@ -11,12 +10,12 @@ const StyledDiv = styled.div`
   padding-top: calc(20vh);
 `;
 
-const Loader = () => {
+const MainLoader = () => {
   return (
     <StyledDiv>
-      <TailSpin color="#b5bdf0" height="170" width="170" ariaLabel="loading" />
+      <Watch color="#b5bdf0" height="170" width="170" ariaLabel="loading" />
     </StyledDiv>
   );
 };
 
-export default Loader;
+export default MainLoader;

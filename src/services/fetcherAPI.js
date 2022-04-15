@@ -12,20 +12,6 @@ const fetchPopularMovies = async () => {
   return response;
 };
 
-// const fetchMoviesById = async id => {
-//   const response = await fetchPopularMovies();
-//   const movies = response.data.results;
-//   const result = movies.find(movie => movie.id === Number(id));
-//   return result;
-// };
-
-// const fetchGenres = async () => {
-//   const response = await Axios.get(
-//     `${BASE_URL}genre/movie/list?api_key=${KEY}`
-//   );
-//   return response;
-// };
-
 const fetchMovieDetails = async id => {
   const response = await Axios.get(
     `${BASE_URL}movie/${id}?api_key=${KEY}&append_to_response=videos,credits,reviews`
@@ -35,12 +21,12 @@ const fetchMovieDetails = async id => {
   return result;
 };
 
-// const fetchMoviesById = async searchQuery => {
-//   const response = await Axios.get(
-//     `${BASE_URL}/search/movie?api_key=${KEY}&query=${searchQuery}`
-//   );
+const fetchMoviesBySearchquery = async searchQuery => {
+  const response = await Axios.get(
+    `${BASE_URL}search/movie?api_key=${KEY}&query=${searchQuery}`
+  );
+  const result = response.data;
+  return result;
+};
 
-//   return response;
-// };
-
-export { fetchPopularMovies, fetchMovieDetails };
+export { fetchPopularMovies, fetchMovieDetails, fetchMoviesBySearchquery };

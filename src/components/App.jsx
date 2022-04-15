@@ -1,18 +1,20 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
-import HomePage from 'pages/HomePage';
-import MoviesPage from 'pages/MoviesPage';
-import NotFoundPage from 'pages/NotFoundPage';
-import MovieDetailsPage from 'pages/MovieDetailsPage';
-import MovieCastSubPage from 'pages/MovieCastSubPage';
-import MovieReviewsSubPage from 'pages/MovieReviewsSubPage';
-import Layout from './Layout';
+import MainLoader from './Watch';
+
+const Layout = lazy(() => import('./Layout'));
+const HomePage = lazy(() => import('../pages/HomePage'));
+const MoviesPage = lazy(() => import('../pages/MoviesPage'));
+const MovieDetailsPage = lazy(() => import('../pages/MovieDetailsPage'));
+const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
+const MovieCastSubPage = lazy(() => import('../pages/MovieCastSubPage'));
+const MovieReviewsSubPage = lazy(() => import('../pages/MovieReviewsSubPage'));
 
 const Container = styled.div`
-  width: 95vw;
+  width: 80vw;
   margin: 0 auto;
 `;
 
@@ -28,21 +30,47 @@ export const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path="/movies/" element={<MoviesPage />} />
           <Route
-            path="/movies/:movieId"
-            element={<MovieDetailsPage itemFetcher={itemFetcher} />}
+            path="/movies/"
+            element={
+              <Suspense fallback={<MainLoader />}>
+                <MoviesPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/movies/:slug"
+            element={
+              <Suspense fallback={<MainLoader />}>
+                <MovieDetailsPage itemFetcher={itemFetcher} />
+              </Suspense>
+            }
           >
             <Route
-              path="/movies/:movieId/cast"
-              element={<MovieCastSubPage item={item} />}
+              path="/movies/:slug/cast"
+              element={
+                <Suspense fallback={<MainLoader />}>
+                  <MovieCastSubPage item={item} />
+                </Suspense>
+              }
             />
             <Route
-              path="/movies/:movieId/reviews"
-              element={<MovieReviewsSubPage item={item} />}
+              path="/movies/:slug/reviews"
+              element={
+                <Suspense fallback={<MainLoader />}>
+                  <MovieReviewsSubPage item={item} />
+                </Suspense>
+              }
             />
           </Route>
-          <Route path="*" element={<NotFoundPage />} />
+          <Route
+            path="*"
+            element={
+              <Suspense fallback={<MainLoader />}>
+                <NotFoundPage />
+              </Suspense>
+            }
+          />
         </Route>
       </Routes>
       <ToastContainer />

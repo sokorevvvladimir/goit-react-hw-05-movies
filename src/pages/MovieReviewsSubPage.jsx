@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const StyledLi = styled.li`
   list-style: none;
@@ -20,7 +21,7 @@ const StyledP = styled.p`
 
 const MovieReviewsSubPage = ({ item }) => {
   const { reviews } = item;
-  const results = reviews?.results;
+  const results = reviews.results;
 
   return (
     <>
@@ -37,6 +38,12 @@ const MovieReviewsSubPage = ({ item }) => {
       </StyledUl>
     </>
   );
+};
+
+MovieReviewsSubPage.propTypes = {
+  item: PropTypes.shape({
+    reviews: PropTypes.shape({ results: PropTypes.arrayOf(PropTypes.object) }),
+  }),
 };
 
 export default MovieReviewsSubPage;

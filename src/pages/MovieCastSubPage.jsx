@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { BsXOctagonFill } from 'react-icons/bs';
+import PropTypes from 'prop-types';
 
 const StyledLi = styled.li`
   list-style: none;
@@ -30,18 +32,18 @@ const MovieCastSubPage = ({ item }) => {
   const BASE_URL = 'https://image.tmdb.org/t/p/w300/';
 
   const { credits } = item;
-  const actors = credits?.cast;
+  const actors = credits.cast;
 
   return (
     <StyledUl>
+      {actors.length === 0 && (
+        <StyledP>No information regarding the cast of this movie.</StyledP>
+      )}
       {actors.map(actor => (
         <StyledLi key={actor.id}>
           <StyledDiv>
             {!actor.profile_path && (
-              <StyledP>
-                NO IMAGE
-                <br /> AVAILABLE
-              </StyledP>
+              <BsXOctagonFill size="100" fill="#b5bdf0" />
             )}
             {actor.profile_path && (
               <img
@@ -61,6 +63,12 @@ const MovieCastSubPage = ({ item }) => {
       ))}
     </StyledUl>
   );
+};
+
+MovieCastSubPage.propTypes = {
+  item: PropTypes.shape({
+    credits: PropTypes.shape({ cast: PropTypes.arrayOf(PropTypes.object) }),
+  }),
 };
 
 export default MovieCastSubPage;

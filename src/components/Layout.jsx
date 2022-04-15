@@ -39,15 +39,17 @@ const Header = styled.header`
   height: 60px;
   display: flex;
   align-items: center;
-  padding-left: 40px;
+  padding-left: calc(20vw);
   font-size: 18px;
   font-weight: 600;
   box-shadow: rgb(171, 169, 188) 0px 20px 30px -10px;
+  z-index: 100;
 `;
 
 const Footer = styled.footer`
   text-align: center;
   font-weight: 600;
+  margin-top: 30px;
 `;
 
 const Content = styled.div`
