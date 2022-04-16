@@ -27,52 +27,54 @@ export const App = () => {
 
   return (
     <Container>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route
-            path="/movies/"
-            element={
-              <Suspense fallback={<MainLoader />}>
-                <MoviesPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/movies/:slug"
-            element={
-              <Suspense fallback={<MainLoader />}>
-                <MovieDetailsPage itemFetcher={itemFetcher} />
-              </Suspense>
-            }
-          >
+      <Suspense fallback={<MainLoader />}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
             <Route
-              path="/movies/:slug/cast"
+              path="/movies/"
               element={
                 <Suspense fallback={<MainLoader />}>
-                  <MovieCastSubPage item={item} />
+                  <MoviesPage />
                 </Suspense>
               }
             />
             <Route
-              path="/movies/:slug/reviews"
+              path="/movies/:slug"
               element={
                 <Suspense fallback={<MainLoader />}>
-                  <MovieReviewsSubPage item={item} />
+                  <MovieDetailsPage itemFetcher={itemFetcher} />
+                </Suspense>
+              }
+            >
+              <Route
+                path="/movies/:slug/cast"
+                element={
+                  <Suspense fallback={<MainLoader />}>
+                    <MovieCastSubPage item={item} />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/movies/:slug/reviews"
+                element={
+                  <Suspense fallback={<MainLoader />}>
+                    <MovieReviewsSubPage item={item} />
+                  </Suspense>
+                }
+              />
+            </Route>
+            <Route
+              path="*"
+              element={
+                <Suspense fallback={<MainLoader />}>
+                  <NotFoundPage />
                 </Suspense>
               }
             />
           </Route>
-          <Route
-            path="*"
-            element={
-              <Suspense fallback={<MainLoader />}>
-                <NotFoundPage />
-              </Suspense>
-            }
-          />
-        </Route>
-      </Routes>
+        </Routes>
+      </Suspense>
       <ToastContainer />
     </Container>
   );
